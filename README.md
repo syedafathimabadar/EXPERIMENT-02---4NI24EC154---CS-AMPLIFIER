@@ -33,3 +33,130 @@ The circuit includes the following components:
 
 ##### Configuration:
 The circuit is arranged as a Common Source amplifier with a PMOS active load, where the input signal is applied to the gate of the NMOS transistor.
+
+### 3. Theory
+
+A Common Source (CS) MOS amplifier is one of the most widely used basic configurations in analog circuit design. It is commonly employed because it provides significant voltage amplification and simple implementation.
+
+#### Key Features
+1.Provides large voltage gain
+2.Produces 180° phase inversion between input and output
+3.The overall gain mainly depends on the transconductance of the transistor and the output resistance of the device
+
+### MOSFET Saturation Current Equation
+When a MOSFET operates in the saturation region, the drain current is expressed as:
+ID=(1/2)kn′(W/L)(VOV)2
+Where: 𝑘𝑛′=𝜇𝑛𝐶𝑜𝑥
+𝑉𝑂𝑉=𝑉𝐺𝑆−𝑉𝑇𝐻
+
+#### Transconductance
+The transconductance of the MOS transistor is given by: 
+𝑔𝑚=2𝐼𝐷 / 𝑉𝑂𝑉
+
+### Output Resistance
+The output resistance of the transistor can be written as:
+𝑟𝑜=1/𝜆𝐼𝐷
+​
+### Voltage Gain
+For a source degeneration amplifier, the voltage gain is represented as:
+𝐴𝑣=−𝑔𝑚(𝑟𝑜1∥𝑟𝑜2)1+𝑔𝑚𝑅𝑠
+
+### 4. Design Calculations
+Step 1: Maximum Drain Current Based on Power Constraint
+The maximum drain current is determined from the power limitation:
+𝑃 ≤ 𝑉𝐷𝐷.𝐼𝐷
+𝐼𝐷=𝑃/𝑉𝐷𝐷​
+𝐼𝐷=0.4𝑚𝑊/1.2𝑉
+𝐼𝐷=0.33𝑚𝐴
+ID=330μA
+
+### Step 2: Output Voltage Selection
+To achieve a symmetrical output voltage swing, the output voltage is selected as:
+𝑉𝑜𝑢𝑡=𝑉𝐷𝐷/2+𝑉𝑅𝑆​
+Vout=0.6+0.2
+Vout=0.8V
+
+### Step 3: Overdrive Voltage
+Assuming:
+𝑉𝑂𝑉=0.25
+𝑉𝑇𝐻=0.366
+
+The gate-to-source voltage becomes:
+𝑉𝐺𝑆=𝑉𝑂𝑉+𝑉𝑇𝐻
+𝑉𝐺𝑆=0.25+0.366
+𝑉𝐺𝑆=0.61𝑉
+
+### Step 4: Gate Voltage
+The required gate voltage is calculated as:
+𝑉𝐺=𝑉𝐺𝑆+𝐼𝐷.𝑅𝑆
+
+Assuming:
+𝑉𝑅𝑆=0.2𝑉
+𝑉𝐺=0.61+0.2
+𝑉𝐺=0.81𝑉
+
+### Step 5: Source Resistor
+The source degeneration resistor value is obtained from:
+𝑅𝑆=𝑉𝑅𝑆/𝐼𝐷
+𝑅𝑆=606Ω
+
+### 5. NMOS Width Calculation
+Using the MOSFET drain current equation:
+𝐼𝐷=(1/2)𝑘𝑛′(𝑊/𝐿)(𝑉𝑂𝑉)2
+Where:
+𝑘𝑛′=𝜇𝑛𝐶𝑜𝑥
+𝜇𝑛=273.81𝑐𝑚2/𝑉𝑠
+𝐶𝑜𝑥=𝜀𝑜𝑥/𝑡𝑜𝑥
+𝜀𝑜𝑥=8.854×10−12×3.9
+𝑡𝑜𝑥=4.1×10−9
+𝑘𝑛′=2.306×10−4
+	
+Solving the equation for transistor width:
+𝑊≈16.48𝜇𝑚
+Therefore, 𝑊1=16.48𝜇𝑚
+
+### 6. PMOS Width Calculation
+For the PMOS device, the drain current relation becomes:
+𝐼𝐷=(1/2)𝜇𝑝𝐶𝑜𝑥(𝑊/𝐿)(𝑉𝑂𝑉)2
+
+Assume: 
+𝑉𝑇𝑃=0.39𝑉
+𝑉𝑂𝑉=0.25𝑉
+
+Reason for Selecting 
+𝑉𝑂𝑉=0.25𝑉
+
+The overdrive voltage 𝑉𝑂𝑉=𝑉𝐺𝑆−𝑉𝑇𝐻 is chosen as 0.25 V to ensure proper MOSFET biasing in the saturation region, particularly when operating with a low supply voltage of 𝑉𝐷𝐷=1.2𝑉.
+
+### Several design considerations influence this choice:
+
+1.Saturation Region Operation
+A moderate overdrive voltage keeps the transistor operating in the saturation region, which is essential for achieving stable and predictable amplification.
+
+2.Low Power Requirement
+Using a relatively small 𝑉𝑂𝑉 helps reduce the drain current, allowing the circuit to remain within the specified power constraint.
+
+3.Better Transconductance Efficiency
+For analog amplifier design, 𝑉𝑂𝑉 values typically lie between 0.2 V and 0.3 V, as this range provides good transconductance efficiency (gm/ID).
+
+4.Voltage Headroom
+Because the supply voltage is limited to 1.2 V, selecting a smaller overdrive voltage preserves sufficient voltage headroom for the remaining nodes of the circuit.
+
+Hence, 𝑉𝑂𝑉=0.25𝑉 is a practical and commonly used assumption in low-voltage CMOS amplifier design.
+
+## PMOS Bias Voltage
+
+𝑉𝑆𝐺=𝑉𝑂𝑉+∣𝑉𝑇𝑃∣
+𝑉𝑆𝐺=0.25+0.39
+
+Since 
+𝑉𝑆𝐺=𝑉𝑆−𝑉𝐺 and 𝑉𝑆=𝑉𝐷𝐷 then 𝑉𝑆𝐺=𝑉𝐷𝐷−𝑉𝐺
+	​
+Therefore the bias voltage is:
+𝑉𝐵=1.2−0.64
+𝑉𝐵=0.56𝑉
+
+## PMOS Width Result
+Solving the current equation for PMOS transistor sizing gives:
+𝑊2=39.05𝜇𝑚
+
