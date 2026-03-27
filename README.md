@@ -19,7 +19,7 @@ Channel length: L=360nm
 4.Compare the calculated gain with the simulated gain values.
 5.Examine and explain the differences between theoretical predictions and practical simulation results.
 
-## CIRCUIT DESCRIPTION 
+## 2A CIRCUIT DESCRIPTION 
 
 <img width="1282" height="936" alt="EXP 2A CKT" src="https://github.com/user-attachments/assets/9bf55269-5b47-4309-8807-7d7514467271" />
 
@@ -161,7 +161,7 @@ Solving the current equation for PMOS transistor sizing gives:
 𝑊2=39.05𝜇𝑚
 
 
-#DC OPERATING POINT
+# DC OPERATING POINT
 
 <img width="960" height="651" alt="EXP 2A OPERATING POINT" src="https://github.com/user-attachments/assets/075e371c-bbff-4109-94ee-a4f37ff1f08e" />
 
@@ -172,7 +172,7 @@ Initial Design
 Estimate	              16.48	      39.05	             145	                0.14
 Modified Dimensions      	75	        95	          323.33	                 0.83
 
-###Current Evaluation
+### Current Evaluation
 
 The circuit was originally designed targeting a drain current of:
                                                                    𝐼𝐷𝑑𝑒𝑠𝑖𝑔𝑛 = 300𝜇𝐴
@@ -180,20 +180,20 @@ The circuit was originally designed targeting a drain current of:
 However, simulation results from LTSpice indicate:
                                                      𝐼𝐷𝑠𝑖𝑚𝑢𝑙𝑎𝑡𝑒𝑑 = 323.33 𝜇𝐴
 
-###Deviation in Current
+### Deviation in Current
 The variation between expected and obtained current is:
                                                         Δ𝐼𝐷 = 323.33 − 300 = 23.33 𝜇𝐴
 
-###Percentage Variation
+### Percentage Variation
 
 
 Percentage Deviation=(23.33/300)×100 ≈ 7.77%
 
-###Interpretation of Results
+### Interpretation of Results
 
 The observed increase in drain current compared to the theoretical value is expected due to practical device behavior. While manual calculations rely on ideal MOSFET assumptions, simulation tools incorporate more realistic conditions.
 
-##Factors Contributing to Variation
+## Factors Contributing to Variation
 1.Channel Length Modulation (λ effect) :
 Causes a slight rise in current as drain voltage increases.
 
@@ -206,11 +206,11 @@ Values such as threshold voltage (VTH) and overdrive voltage (VOV) are approxima
 4.Increase in Transistor Width (W)
 Enlarging W₁ and W₂ directly enhances current conduction capability.
 
-###Final Observation
+### Final Observation
 
 The simulated drain current is moderately higher than the calculated value, with a deviation of about 7.77%, which is acceptable in practical CMOS design. This confirms that the circuit operates close to the intended design with improved performance after resizing.
 
-#TRANSIENT ANALYSIS :
+# TRANSIENT ANALYSIS :
 
 FROM THE INPUT TRANSIENT WAVEFORM :
 
@@ -260,7 +260,7 @@ Av(dB) = 20 log(12.36)
 
 Av(dB) = 21.84 dB
 
-#THEROTICAL GAIN CALCULATION:
+# THEROTICAL GAIN CALCULATION:
 
 Given
 ID = 300 µA
@@ -301,7 +301,7 @@ Gain	      24.24 dB	             21.52 dB
 Bandwidth	   Ideal	              125 MHz
 GBP	           Ideal	              1.41 GHz
 
-#Causes for Variation Between Calculated and Simulated Results
+# Causes for Variation Between Calculated and Simulated Results
 
 In manual analysis, MOSFETs are treated as ideal devices using simplified equations. However, simulation tools like LTSpice rely on detailed models that capture real device behavior. Because of this, some deviation between theoretical and simulated values is expected.
 
@@ -333,7 +333,7 @@ Oxide thickness
 Such variations result in practical values that differ from theoretical estimates.
 
 
-#AC ANALYSIS:
+# AC ANALYSIS:
 
 <img width="1913" height="449" alt="EXP 2A AC ANALYSIS" src="https://github.com/user-attachments/assets/87496d0b-1527-48ff-9bfb-8c8203d0545b" />  <img width="445" height="464" alt="EXP 2A AC ALY CURSOR" src="https://github.com/user-attachments/assets/34a270d7-fa5a-460b-9c2d-bdc4aed401c0" />
 
@@ -350,7 +350,7 @@ Bandwidth:
 BW = FH − FL
 BW = 125.69 MHz
 
-#Gain Bandwidth Product
+## Gain Bandwidth Product
 GBP = Av × BW
 
 Convert gain to linear:
@@ -362,4 +362,90 @@ GBP ≈ 1.41 GHz
 
 Unity gain bandwith: UGB=2.05GHz
 
-#CASCODE AMPLIFIER DESIGN AND SIMULATION 
+# 2B CASCODE AMPLIFIER DESIGN AND SIMULATION 
+
+## CIRCUIT DIAGRAM
+
+<img width="1237" height="792" alt="EXP 2B CASCODE CKT DIAGRAM" src="https://github.com/user-attachments/assets/9dec5fcb-ab3a-44d5-999f-47c6ab035561" />
+
+
+# Concept of Cascode Amplifier
+
+A cascode amplifier is formed by stacking two MOSFET stages — a common source stage followed by a common gate stage. This arrangement enhances overall performance compared to a single transistor amplifier.
+
+## Role of Transistors:
+M1 → Acts as the input (common-source stage)
+M2 → Works as the cascode (common-gate stage)
+M3 → Functions as a current source
+
+## Key Benefits of Cascode Configuration
+1.Provides higher voltage gain
+2.Offers large output resistance
+3.Minimizes Miller effect
+4.Improves frequency response
+5.Ensures better input-output isolation
+
+## Voltage Gain Expression
+
+The overall gain can be approximated as:
+Av ≈ gm1 × ro1 × gm2 × ro2
+Where:
+𝑔M→ Transconductance
+𝑟𝑜 → Output resistance
+
+## Design Requirements
+Parameter	                           Assigned Value
+Supply Voltage VDD                        1.2 V
+Maximum Drain Current 𝐼𝐷                 300 µA
+
+Technology	CMOS
+Overdrive Voltage VOV                     0.25 V
+
+### Stepwise Design Procedure
+
+Step 1: Current Limitation
+To satisfy power constraints, the drain current is restricted as:
+ID ≤ 300 µA
+
+Step 2: Choosing Overdrive Voltage
+For reliable saturation operation:
+VOV = 0.25 V
+
+Step 3: Determining Gate-Source Voltage
+The relation is:
+VGS = VTH + VOV = 0.366 + 0.25 = 0.61 V
+Hence, bias voltage:
+VB1 = 0.61 V
+
+Step 4: Cascode Bias Calculation
+For PMOS device:
+VSG = VOV + |VTP| = 0.25 + 0.39 = 0.64 V
+VG = VDD − VSG = 1.2 − 0.64 = 0.556 V
+VB2 = 0.556 V
+
+Step 5: Output Voltage Selection
+To allow maximum symmetrical swing:
+Vout ≈ VDD / 2 = 1.2 / 2 = 0.6 V
+
+Considering practical headroom:
+Vout ≈ 0.75 V
+
+
+4. Transistor Dimensioning
+
+The MOSFET current relation used is:
+ID = (1/2) kn' (W/L) (VOV)²
+Using this expression, the transistor widths are obtained.
+
+Calculated Device Sizes
+W1 = W3 = 16.48 µm
+W2 = 39.05 µm
+
+## Note:
+The procedure used to determine the transistor dimensions follows the same methodology as applied in the earlier experiment (based on the MOSFET current equation). Hence, only final values are presented here to avoid repetition.
+
+# DC ANALYSIS
+
+<img width="765" height="745" alt="EXP 2B CASCAODE OPERATING POINT" src="https://github.com/user-attachments/assets/3da51956-e90c-4603-b932-26417396dfb8" />
+
+
