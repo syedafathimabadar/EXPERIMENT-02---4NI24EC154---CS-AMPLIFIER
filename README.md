@@ -448,4 +448,374 @@ The procedure used to determine the transistor dimensions follows the same metho
 
 <img width="765" height="745" alt="EXP 2B CASCAODE OPERATING POINT" src="https://github.com/user-attachments/assets/3da51956-e90c-4603-b932-26417396dfb8" />
 
+After implementing the circuit in LTSpice, the transistor widths were slightly adjusted to obtain the required bias current.
 
+Parameter	   Value
+ ID	       311 µA
+ W1 , W3	   41 µm
+ W2        	   90 µm
+ Vout	       0.75 V
+
+ ## TRANSIENT ANALYSIS
+
+INPUT SIGNAL 
+
+<img width="1899" height="491" alt="EXP 2B CASCODE INPUT HIGH" src="https://github.com/user-attachments/assets/017ab9fe-64f0-44ca-aade-2deb15722a98" />
+
+<img width="1919" height="485" alt="EXP 2B CASCODE INPUT LOW" src="https://github.com/user-attachments/assets/b58d6b6c-4801-4ae5-b7ff-ea0e90487d3f" />
+
+VH = 819.61 mV
+VL = 800.33 mV
+
+Vin(pp) = VH − VL
+
+Vin(pp) = 819.61 − 800.33
+Vin(pp) = 19.28 mV
+Vin(pp) ≈ 0.0192 V
+
+OUTPUT SIGNAL 
+
+<img width="1915" height="491" alt="EXP 2B CASCODE OUTPUT HIGH" src="https://github.com/user-attachments/assets/e9a28451-707b-4d87-941f-a9119944d2f8" />
+
+
+VH = 781.98 mV
+VL = 723.10 mV
+
+Vout(pp) = VH − VL
+Vout(pp) = 781.98 − 723.10
+Vout(pp) = 58.88 mV
+Vout(pp) ≈ 0.058 V
+
+### Voltage Gain
+Av = Vout(pp) / Vin(pp)
+
+Av = 0.058 / 0.0192
+
+Av = 3.02 V/V Av =9.60 dB
+
+## Theoretical Gain Estimation
+
+For a cascode amplifier incorporating source degeneration, the small-signal voltage gain can be expressed as:
+Av = −(gm1 × ro2) / (1 + gm1 × ro3)
+
+By substituting the calculated small-signal values:
+Av ≈ −0.999
+Hence, the magnitude becomes:
+|Av| ≈ 1
+
+### Gain in Decibel Form
+
+Av(dB) = 20 log10(|Av|) = 20 log10(0.999) = 20 × (−0.000434) ≈ −0.008 dB
+This indicates that the theoretical gain is approximately unity (1 V/V), which is nearly 0 dB.
+
+## Explanation for Variation Between Ideal and Simulated Gain
+
+The difference between calculated gain and simulation results arises because real devices do not behave ideally. Several practical effects contribute to this mismatch:
+
+1. Finite Output Resistance
+In analytical calculations, output resistance is often considered very high or ideal. In reality, due to channel length modulation, the effective resistance is limited, which impacts gain.
+
+2. Effect of Parasitic Capacitances
+MOSFETs inherently contain capacitances such as gate-to-source and gate-to-drain. These elements influence signal behavior, especially at higher frequencies, thereby reducing effective gain.
+
+3. Shift in Bias Conditions
+Theoretical analysis assumes perfectly fixed bias voltages. However, during simulation, slight variations in operating point can occur, altering the gain.
+
+4. Model-Level Parameter Differences
+Simulation tools incorporate advanced MOSFET models that account for effects like mobility reduction and process dependencies, which are not included in simplified equations.
+
+5.Changes in Device Dimensions
+To achieve the required operating current in simulation, transistor widths are often adjusted. This modification directly affects transconductance and output resistance, thereby influencing gain.
+
+### Final Observation
+Due to these non-ideal and practical influences, the simulated gain (around 3 V/V) is higher than the theoretically predicted value (approximately 1 V/V). This variation is expected in real-world circuit analysis.
+
+# AC ANALYSIS 
+
+<img width="1240" height="317" alt="EXP 2B CASCODE AC ANALYSIS" src="https://github.com/user-attachments/assets/edebd141-7eb9-4f4d-ab6f-5d1a923dc3f1" />
+
+## AC Gain Analysis
+
+From the simulation results, the amplifier shows an AC gain of:
+Av(dB) = 9.69 dB
+
+To express this in linear form:
+Av = 10^(9.69 / 20) = 3.05 V/V
+
+## Half-Power Gain
+
+The gain at the 3-dB point is:
+Av(3dB) = 6.69 dB
+
+## Frequency Characteristics
+
+The upper cutoff frequency obtained is:
+fH = 104.48 MHz
+Since the lower cutoff frequency is very small:
+fL ≈ 0
+
+The bandwidth is therefore:
+BW = fH − fL ≈ 104.48 MHz
+
+## Gain-Bandwidth Relationship
+
+The gain-bandwidth product is calculated as:
+GBP = Av × BW = 3.05 × 104.48 MHz = 318.66 MHz ≈ 0.318 GHz
+
+## Unity Gain Performance
+
+The unity gain bandwidth is found to be:
+UGB ≈ 302.66 MHz ≈ 0.30 GHz
+
+## Summary of Results
+Parameter	              Obtained Value
+Supply Voltage	             1.2 V
+Drain Current	             311 µA
+Voltage Gain	            3.02 V/V
+AC Gain         	         9.69 dB
+Bandwidth	                104.48 MHz
+Gain-Bandwidth Product    	0.318 GHz
+Unity Gain Bandwidth	     0.30 GHz
+Output Voltage	              0.75 V
+
+## Final Remarks
+
+The designed cascode amplifier operates with a supply of 1.2 V and maintains a drain current close to the targeted value. The circuit delivers a voltage gain of about 3 V/V along with a relatively wide bandwidth. Compared to a simple common-source amplifier, the cascode structure provides better gain and improved high-frequency response, confirming its effectiveness in amplifier design. 
+
+# 2C DIODE CONNECTED AMPLIFIER 
+
+CIRCCUIT DIAGRAM:
+
+<img width="1630" height="834" alt="EXP 2C DIODE CONNECT CKT" src="https://github.com/user-attachments/assets/3c9ef97e-0798-4224-9dc3-385415f4304c" />
+
+# Objective
+The purpose of this experiment is to design a MOS amplifier using a diode-connected configuration and to examine its DC biasing, transient response, and frequency characteristics.
+
+## Basic Principle
+When the gate and drain of a MOSFET are connected together, the device operates in a diode-like manner. In such a case, both voltages become equal:
+VGS = VDS
+This automatically satisfies the saturation requirement:
+VDS ≥ VGS − VTH
+Hence, the transistor remains in saturation for all operating conditions and behaves as a voltage-dependent load element.
+
+The small-signal voltage gain for this configuration is given by:
+Av = −(gm1 × ro2) / (1 + gm1 × ro3)
+
+### Given Parameters
+
+Supply voltage (VDD)        :  1.8 V
+Maximum allowable current   : 300 µA
+Technology used             : CMOS
+Overdrive voltage (VOV)     : 0.25 V
+Threshold voltage (VTH)     : approximately 0.366 V
+
+## Stepwise Design Approach
+1.Diode-Connected Device (M3)
+For transistor M3, since the drain and gate are tied:
+VGS3 = VDS3
+
+Using the relation:
+VGS3 = VOV + VTH = 0.25 + 0.366 = 0.61 V
+Therefore:
+VDS3 = 0.61 V
+
+2. PMOS Device (M2)
+The required source-to-gate voltage is:
+VSG2 = VOV + |VTP| = 0.25 + 0.39 = 0.64 V
+
+The bias voltage can be determined as:
+VB1 = VDD − VSG2 = 1.2 − 0.64 = 0.56 V
+
+3.NMOS Device (M1)
+From the overdrive condition:
+VGS1 = VOV + VTH = 0.25 + 0.366 = 0.61 V
+Since the source is at:
+VS1 = 0.61 V
+
+The input voltage becomes:
+Vin = VGS1 + VS1 = 0.61 + 0.61 = 1.22 V
+
+4.Output Voltage Estimation
+Applying Kirchhoff’s Voltage Law:
+VDD = VSD3 + VDS1 + VSD2
+Substituting known values:
+1.2 = 0.61 + 0.25 + VDS2
+VDS2 = 1.2 − 0.86 = 0.34 V
+
+Hence, the output voltage is:
+Vout = VDS1 + VDS3 = 0.25 + 0.61 = 0.86 V
+
+## Device Dimensioning
+
+The drain current relation for MOSFET is:
+ID = (1/2) kn (W/L) (VOV)²
+
+Using this, the transistor widths are determined as:
+W1 = 16.48 µm
+W2 = 16.48 µm
+W3 = 39.05 µm
+
+## Conclusion Insight
+The diode-connected MOS configuration ensures continuous saturation and acts as an effective load for amplification. The calculated biasing conditions confirm proper operation of all transistors, resulting in a stable amplifier design
+
+# DC ANALYSIS 
+
+<img width="689" height="746" alt="EXP 2C DIODE CONNECT OERATING POINT" src="https://github.com/user-attachments/assets/1bf657a3-75db-4952-95e3-df00b03210c9" />
+
+After simulation tuning
+W1 = 37.5 µm
+W2 = 37.5 µm
+W3 = 90 µm
+
+Drain current
+ID = 303 µA
+
+Output voltage
+Vout = 0.866 V
+
+# TRANSIENT ANALYSIS
+
+INPUT LEVELS
+
+<img width="1244" height="215" alt="EXP 2C DIODE CONNECT INPUT" src="https://github.com/user-attachments/assets/6a44603b-d8b8-46d5-857a-e0eeb59a14d2" />
+
+Vin = 1.22 V
+
+OUTPUT LEVELS
+
+<img width="1237" height="204" alt="EXP 2C DIODE CONNECT OUTPUT" src="https://github.com/user-attachments/assets/3935c9ba-3e8c-4878-8e9b-e4dc10124884" />
+
+VH = 930.2 mV
+VL = 807.873 mV
+
+Output peak to peak:
+Vout(pp) = VH − VL
+Vout(pp) = 0.122 V
+
+Input peak to peak:
+Vin(pp) = 1.22 − 1.21
+Vin(pp) = 0.01 V
+
+Voltage gain:
+Av = Vout(pp) / Vin(pp)
+Av = 0.122 / 0.01
+Av = 12.2 V/V
+
+Gain in dB:
+Av(dB) = 20 log (Av)
+Av = 21.72 dB
+
+## Theoretical Gain Evaluation
+
+For a diode-connected MOS amplifier, the small-signal voltage gain can be expressed as:
+Av = −(gm1 × ro2) / (1 + gm1 / gm3)
+By substituting the obtained parameter values:
+Av ≈ 39.99 V/V
+
+## Gain in Decibel Scale
+The gain in dB is calculated using:
+Av(dB) = 20 log10(Av) = 20 log10(39.99) ≈ 32.03 dB
+Hence, the expected theoretical gain is nearly 40 V/V, which corresponds to about 32 dB.
+
+## Comparison of Gains
+Category	                      Gain (V/V)         	Gain (dB)
+Calculated (Theoretical)	         39.99	             32.03 dB
+Transient Response	                  12.2	              21.72 dB
+AC Analysis	                           —	              22.37 dB
+
+## Explanation for Variation
+
+The difference between theoretical and simulated gains arises due to practical device behavior:
+
+1.Finite Output Resistance:
+Due to channel length modulation, the output resistance is reduced, lowering the gain compared to ideal calculations.
+
+2.Effect of Parasitic Elements
+Internal capacitances within the MOSFET influence signal behavior, especially during AC analysis.
+
+3.Advanced Device Modeling
+Simulation uses detailed BSIM models that include higher-order effects not considered in hand calculations.
+
+4.Bias Point Shifts
+Adjustments in transistor dimensions during simulation slightly alter operating conditions, which affects parameters like transconductance and output resistance.
+
+## Final Remark
+Although the theoretical gain is significantly higher, practical factors lead to a reduced gain in simulation, which is expected in real circuit implementations.
+
+# AC ANALYSIS 
+
+<img width="1234" height="309" alt="EXP 2C DIODE CONNECT AC ANALYSIS" src="https://github.com/user-attachments/assets/af3e2a48-3888-4591-9269-0301091855ca" />
+
+Midband gain:
+Av = 22.37 dB
+
+3 dB gain:
+Av(3dB) = 22.37 − 3
+Av(3dB) = 19.37 dB
+
+Upper cutoff frequency:
+fH = 251.57 MHz
+
+Bandwidth:
+BW = fH − fL
+BW = 251.57 MHz
+
+Gain Bandwidth Product:
+GBP = Av × BW
+Av (linear) = 10^(22.37/20)
+Av = 13.13
+
+GBP = 13.13 × 251.57 MHz
+GBP ≈ 3.3 GHz
+
+Unity Gain Bandwidth:
+UGB = 3.95 GHz
+
+
+## Causes for Difference Between Ideal and Simulated Gain
+
+The variation between calculated and simulated gain values can be attributed to practical non-idealities in MOSFET operation:
+
+Channel length modulation reduces the effective output resistance, which in turn lowers gain.
+Parasitic capacitances such as Cgs and Cgd influence the signal, especially at higher frequencies.
+Use of realistic transistor models in simulation introduces second-order effects not considered in theory.
+Variations in device parameters like threshold voltage and mobility also contribute to the mismatch.
+
+# Result
+The diode-connected MOS amplifier was designed and its performance was evaluated successfully. The circuit exhibits a voltage gain of approximately 12.2 V/V (21.72 dB) along with a bandwidth of 251.57 MHz. The corresponding gain-bandwidth product is around 3.3 GHz.
+
+## Comparison of Different Common Source Configurations
+1. Structural and Performance Comparison
+Parameter	           Source Degenerated Amplifier	         Diode Connected Amplifier	        Cascode Amplifier
+Configuration    	NMOS with source resistor (feedback)	  NMOS with diode-connected load	Two stacked MOSFETs
+Observed Gain            	12.36 V/V (21.84 dB)	              12.2 V/V (21.72 dB)	          Highest in theory
+Bandwidth	                    Medium	                          Relatively high	                 Reduced
+Output Resistance	              Low	                             Moderate	                     Very high
+Linearity	                      High	                             Moderate	                      Moderate
+
+## Gain Comparison
+Amplifier Type	                              Gain (dB)
+Source Degenerated Amplifier	              21.84 dB
+Cascode Amplifier	                          9.60 dB
+Diode Connected Amplifier	                  21.72 dB
+
+### Why Cascode Gain is Lower in Practice?
+Although cascode amplifiers are expected to deliver maximum gain theoretically, the experimental results show a lower gain due to several limitations:
+
+Restricted voltage headroom: Stacking transistors reduces the available voltage swing.
+Reduced effective transconductance: Biasing conditions and sizing choices limit gm.
+Presence of parasitic effects: Capacitances and channel modulation reduce overall gain.
+Therefore, practical constraints prevent the cascode amplifier from achieving its ideal gain in this setup.
+
+## Overall Result
+All three amplifier configurations were successfully implemented and analyzed. Their gain characteristics were observed and compared under similar conditions.
+
+## Key Inferences
+1.Source Degenerated Amplifier
+This configuration improves linearity and stability due to the feedback introduced by the source resistor, though it sacrifices some gain.
+
+2.Cascode Amplifier
+While theoretically capable of very high gain due to increased output resistance, its performance is limited in practice by voltage constraints and biasing issues.
+
+3.Diode-Connected Load Amplifier
+This design offers a balance between simplicity and performance, providing moderate gain with good bandwidth, making it suitable for basic amplification needs.
