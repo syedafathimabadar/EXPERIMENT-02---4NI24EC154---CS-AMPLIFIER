@@ -219,13 +219,147 @@ FROM THE INPUT TRANSIENT WAVEFORM :
 
 <img width="1905" height="462" alt="EXP 2A INPUT LOW" src="https://github.com/user-attachments/assets/18c49b32-90f4-4f11-be6e-2a16af0becf1" />
 
+VH = 0.819 V
+VL = 0.800 V
+input peak-to-peak voltage
+
+Vin(pp) = VH − VL
+
+Vin(pp) = 0.819 - 0.800
+
+Vin(pp) = 0.019 V
+
 FROM THE OUTPUT TRANSIENT WAVEFORM :
 
 <img width="1913" height="503" alt="EXP 2A OUTPUT HIGH" src="https://github.com/user-attachments/assets/4d0ccf49-02c9-48d9-93ea-524b229588c8" />
 
 <img width="1918" height="469" alt="EXP 2A OUTPUT LOW" src="https://github.com/user-attachments/assets/fd689a94-d5b8-4acf-91a0-bdfe30e8a370" />
 
+VoutH = 0.932 V
+VoutL = 0.697 V
+
+output peak-to-peak voltage
+Vout(pp) = VoutH − VoutL
+
+Vout(pp) = 0.932 − 0.697
+
+Vout(pp) = 0.235 V
+
+*voltage gain
+
+Av = Vout(pp) / Vin(pp)
+
+Av = 0.235 / 0.019
+
+Av = 12.36 V/V
+
+Gain to decibels
+Av(dB) = 20 log(Av)
+
+Av(dB) = 20 log(12.36)
+
+Av(dB) = 21.84 dB
+
+#THEROTICAL GAIN CALCULATION:
+
+Given
+ID = 300 µA
+VOV = 0.25 V
+
+Transconductance:
+gm = 2ID / VOV
+gm = 2 × 300µA / 0.25
+gm = 2.4 × 10⁻³
+
+Assume channel length modulation:
+
+λ = 0.1 V⁻¹
+ro = 1 / (λ ID)
+ro = 1 / (0.1 × 300µA)
+ro = 33333 Ω
+
+Parallel resistance:
+ro1 || ro2
+= 33333 || 33333
+= 16665 Ω
+
+Voltage Gain
+
+Av = - gm (ro1 || ro2) / (1 + gm Rs)
+Av = - (2.4×10⁻³ × 16665) / (1 + 2.4×10⁻³ × 606)
+Av = 16.294 V/V
+
+Gain in dB:
+
+Av = 20 log(16.294)
+Av ≈ 24.24 dB
+
+# Comparison of Results
+
+Parameter	 Theoretical	        Practical
+Gain	      24.24 dB	             21.52 dB
+Bandwidth	   Ideal	              125 MHz
+GBP	           Ideal	              1.41 GHz
+
+#Causes for Variation Between Calculated and Simulated Results
+
+In manual analysis, MOSFETs are treated as ideal devices using simplified equations. However, simulation tools like LTSpice rely on detailed models that capture real device behavior. Because of this, some deviation between theoretical and simulated values is expected.
+
+1. Impact of Short Channel Effects
+At smaller technology nodes such as 180 nm, transistors no longer behave ideally. Phenomena like velocity saturation and drain-induced barrier lowering (DIBL) influence device operation, often altering the expected current levels.
+
+2. Reduction in Carrier Mobility
+When the electric field inside the channel becomes strong, charge carriers experience scattering, which lowers their mobility. This directly affects the drain current and leads to deviation from ideal predictions.
+
+3. Channel Length Modulation Effect
+In real MOSFETs, the drain current is not perfectly constant with increasing VDS. Instead, it slightly increases due to effective channel shortening. This reduces output resistance and impacts amplifier gain.
+
+4. Presence of Internal Capacitances
+Practical MOSFETs include unavoidable parasitic capacitances such as:
+
+Gate-to-source capacitance
+Gate-to-drain capacitance
+Bulk junction capacitances
+
+These elements influence frequency response and dynamic performance, which are not considered in basic theoretical calculations.
+
+5. Use of Advanced Device Models in Simulation
+LTSpice employs BSIM-based models, which incorporate multiple second-order effects like non-linearities, temperature dependence, and geometry effects. These are not included in simplified hand analysis.
+
+6. Manufacturing (Process) Variations
+During fabrication, physical parameters may slightly vary, including:
+Threshold voltage (VTH) Carrier mobility
+Oxide thickness
+Such variations result in practical values that differ from theoretical estimates.
 
 
+#AC ANALYSIS:
 
+<img width="1913" height="449" alt="EXP 2A AC ANALYSIS" src="https://github.com/user-attachments/assets/87496d0b-1527-48ff-9bfb-8c8203d0545b" />  <img width="445" height="464" alt="EXP 2A AC ALY CURSOR" src="https://github.com/user-attachments/assets/34a270d7-fa5a-460b-9c2d-bdc4aed401c0" />
 
+From AC simulation:
+Av ≈ 21 dB
+
+Upper cutoff frequency:
+fH = 125.69 MHz
+
+Lower cutoff frequency:
+FL ≈ 0
+
+Bandwidth:
+BW = FH − FL
+BW = 125.69 MHz
+
+#Gain Bandwidth Product
+GBP = Av × BW
+
+Convert gain to linear:
+Av = 10^(21/20)
+Av = 11.22
+
+GBP = 11.22 × 125.69 MHz
+GBP ≈ 1.41 GHz
+
+Unity gain bandwith: UGB=2.05GHz
+
+#CASCODE AMPLIFIER DESIGN AND SIMULATION 
