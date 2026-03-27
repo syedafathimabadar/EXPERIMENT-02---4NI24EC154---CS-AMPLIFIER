@@ -160,3 +160,72 @@ Therefore the bias voltage is:
 Solving the current equation for PMOS transistor sizing gives:
 𝑊2=39.05𝜇𝑚
 
+
+#DC OPERATING POINT
+
+<img width="960" height="651" alt="EXP 2A OPERATING POINT" src="https://github.com/user-attachments/assets/075e371c-bbff-4109-94ee-a4f37ff1f08e" />
+
+### Design Summary and Simulation Comparison
+Condition	             W₁ (µm)	 W₂ (µm) 	 Drain Current(ID)        Output Voltage 
+                                                       (µA)                 Vout(V)
+Initial Design 
+Estimate	              16.48	      39.05	             145	                0.14
+Modified Dimensions      	75	        95	          323.33	                 0.83
+
+###Current Evaluation
+
+The circuit was originally designed targeting a drain current of:
+                                                                   𝐼𝐷𝑑𝑒𝑠𝑖𝑔𝑛 = 300𝜇𝐴
+
+However, simulation results from LTSpice indicate:
+                                                     𝐼𝐷𝑠𝑖𝑚𝑢𝑙𝑎𝑡𝑒𝑑 = 323.33 𝜇𝐴
+
+###Deviation in Current
+The variation between expected and obtained current is:
+                                                        Δ𝐼𝐷 = 323.33 − 300 = 23.33 𝜇𝐴
+
+###Percentage Variation
+
+
+Percentage Deviation=(23.33/300)×100 ≈ 7.77%
+
+###Interpretation of Results
+
+The observed increase in drain current compared to the theoretical value is expected due to practical device behavior. While manual calculations rely on ideal MOSFET assumptions, simulation tools incorporate more realistic conditions.
+
+##Factors Contributing to Variation
+1.Channel Length Modulation (λ effect) :
+Causes a slight rise in current as drain voltage increases.
+
+2.Advanced Device Modeling:
+LTSpice includes second-order effects like mobility reduction and short-channel behavior.
+
+3. Parameter Estimation Errors
+Values such as threshold voltage (VTH) and overdrive voltage (VOV) are approximated during hand calculations.
+
+4.Increase in Transistor Width (W)
+Enlarging W₁ and W₂ directly enhances current conduction capability.
+
+###Final Observation
+
+The simulated drain current is moderately higher than the calculated value, with a deviation of about 7.77%, which is acceptable in practical CMOS design. This confirms that the circuit operates close to the intended design with improved performance after resizing.
+
+#TRANSIENT ANALYSIS :
+
+FROM THE INPUT TRANSIENT WAVEFORM :
+
+<img width="1901" height="444" alt="EXP 2A INPUT HIGH" src="https://github.com/user-attachments/assets/b30cb3a0-3e66-43fe-b281-c7438781db6f" />
+
+
+<img width="1905" height="462" alt="EXP 2A INPUT LOW" src="https://github.com/user-attachments/assets/18c49b32-90f4-4f11-be6e-2a16af0becf1" />
+
+FROM THE OUTPUT TRANSIENT WAVEFORM :
+
+<img width="1913" height="503" alt="EXP 2A OUTPUT HIGH" src="https://github.com/user-attachments/assets/4d0ccf49-02c9-48d9-93ea-524b229588c8" />
+
+<img width="1918" height="469" alt="EXP 2A OUTPUT LOW" src="https://github.com/user-attachments/assets/fd689a94-d5b8-4acf-91a0-bdfe30e8a370" />
+
+
+
+
+
